@@ -1,0 +1,527 @@
+# Freeman Logistics — Admin Dashboard
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freeman Logistics Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f7fb;
+    color:#1b1b1b;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    background:#071c35;
+    padding:30px;
+    color:#fff;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:50px;
+}
+
+.logo i{
+    color:#ffb400;
+    font-size:28px;
+}
+
+.logo h2{
+    font-size:24px;
+}
+
+.menu{
+    list-style:none;
+}
+
+.menu li{
+    margin-bottom:18px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#d8d8d8;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.menu a:hover,
+.menu .active{
+    background:#ffb400;
+    color:#071c35;
+    font-weight:600;
+}
+
+/* MAIN */
+
+.main{
+    padding:40px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.topbar h1{
+    color:#071c35;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.06);
+}
+
+.admin-profile img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+/* STATS */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:40px;
+}
+
+.stat-card{
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.06);
+}
+
+.stat-card i{
+    font-size:30px;
+    color:#ffb400;
+    margin-bottom:15px;
+}
+
+.stat-card h2{
+    color:#071c35;
+    margin-bottom:5px;
+}
+
+.stat-card p{
+    color:#777;
+}
+
+/* FORM */
+
+.form-section{
+    background:#fff;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.06);
+    margin-bottom:40px;
+}
+
+.form-section h2{
+    margin-bottom:25px;
+    color:#071c35;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-family:'Poppins',sans-serif;
+}
+
+textarea{
+    height:120px;
+    resize:none;
+}
+
+.submit-btn{
+    background:#ffb400;
+    border:none;
+    padding:16px 30px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* TABLE */
+
+.table-section{
+    background:#fff;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.06);
+}
+
+.table-section h2{
+    margin-bottom:25px;
+    color:#071c35;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:16px;
+    text-align:left;
+    border-bottom:1px solid #eee;
+}
+
+th{
+    background:#071c35;
+    color:#fff;
+}
+
+.status{
+    padding:8px 12px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.in-transit{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.delivered{
+    background:#d4edda;
+    color:#155724;
+}
+
+.pending{
+    background:#f8d7da;
+    color:#721c24;
+}
+
+.action-btn{
+    border:none;
+    padding:10px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-right:8px;
+}
+
+.edit-btn{
+    background:#071c35;
+    color:#fff;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:#fff;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+.dashboard{
+    grid-template-columns:1fr;
+}
+
+.sidebar{
+    display:none;
+}
+
+.stats-grid,
+.form-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<div class="logo">
+<i class="fa-solid fa-truck-fast"></i>
+<h2>Freeman Admin</h2>
+</div>
+
+<ul class="menu">
+<li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+<li><a href="#shipment-form"><i class="fa-solid fa-box"></i> Create Shipment</a></li>
+<li><a href="#shipments"><i class="fa-solid fa-truck"></i> Shipments</a></li>
+<li><a href="#"><i class="fa-solid fa-location-dot"></i> Tracking</a></li>
+<li><a href="#"><i class="fa-solid fa-users"></i> Customers</a></li>
+<li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+</ul>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="topbar">
+<h1>Dashboard Overview</h1>
+
+<div class="admin-profile">
+<img src="https://randomuser.me/api/portraits/men/32.jpg">
+<div>
+<h4>Admin</h4>
+<small>Freeman Logistics</small>
+</div>
+</div>
+
+</div>
+
+<!-- STATS -->
+<div class="stats-grid">
+
+<div class="stat-card">
+<i class="fa-solid fa-box"></i>
+<h2>1,250</h2>
+<p>Total Shipments</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-truck-fast"></i>
+<h2>846</h2>
+<p>In Transit</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-circle-check"></i>
+<h2>392</h2>
+<p>Delivered</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-users"></i>
+<h2>5,420</h2>
+<p>Customers</p>
+</div>
+
+</div>
+
+<!-- CREATE SHIPMENT -->
+<div class="form-section" id="shipment-form">
+<h2>Create New Shipment</h2>
+
+<form>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Tracking Number</label>
+<input type="text" placeholder="FRM92817452">
+</div>
+
+<div class="form-group">
+<label>Shipment Status</label>
+<select>
+<option>Pending</option>
+<option>In Transit</option>
+<option>Delivered</option>
+<option>On Hold</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Sender Name</label>
+<input type="text" placeholder="John Doe">
+</div>
+
+<div class="form-group">
+<label>Receiver Name</label>
+<input type="text" placeholder="Michael Smith">
+</div>
+
+<div class="form-group">
+<label>Pickup Location</label>
+<input type="text" placeholder="Lagos, Nigeria">
+</div>
+
+<div class="form-group">
+<label>Destination</label>
+<input type="text" placeholder="New York, USA">
+</div>
+
+<div class="form-group">
+<label>Estimated Delivery Date</label>
+<input type="date">
+</div>
+
+<div class="form-group">
+<label>Current Shipment Location</label>
+<input type="text" placeholder="Abuja Distribution Center">
+</div>
+
+</div>
+
+<div class="form-group">
+<label>Shipment Description</label>
+<textarea placeholder="Package details, cargo information, delivery notes..."></textarea>
+</div>
+
+<button class="submit-btn" type="submit">
+Create Shipment
+</button>
+
+</form>
+
+</div>
+
+<!-- TABLE -->
+<div class="table-section" id="shipments">
+<h2>Recent Shipments</h2>
+
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Tracking ID</th>
+<th>Customer</th>
+<th>Destination</th>
+<th>Status</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>FRM92817452</td>
+<td>John Doe</td>
+<td>New York, USA</td>
+<td><span class="status in-transit">In Transit</span></td>
+<td>May 13, 2026</td>
+<td>
+<button class="action-btn edit-btn">Edit</button>
+<button class="action-btn delete-btn">Delete</button>
+</td>
+</tr>
+
+<tr>
+<td>FRM78291011</td>
+<td>Sarah James</td>
+<td>London, UK</td>
+<td><span class="status delivered">Delivered</span></td>
+<td>May 11, 2026</td>
+<td>
+<button class="action-btn edit-btn">Edit</button>
+<button class="action-btn delete-btn">Delete</button>
+</td>
+</tr>
+
+<tr>
+<td>FRM66482190</td>
+<td>David Lee</td>
+<td>Toronto, Canada</td>
+<td><span class="status pending">Pending</span></td>
+<td>May 10, 2026</td>
+<td>
+<button class="action-btn edit-btn">Edit</button>
+<button class="action-btn delete-btn">Delete</button>
+</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+```
+
+# Next Step
+
+After testing the admin dashboard locally:
+
+1. Create:
+
+   ```
+   admin.html
+   ```
+
+2. Paste the code.
+
+3. Open in browser.
+
+4. Next phase:
+
+   * Connect Supabase database
+   * Save shipment records
+   * Real tracking system
+   * Login authentication
+   * Edit/delete shipment logic
