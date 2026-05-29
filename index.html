@@ -850,7 +850,15 @@ warehousing, and international shipping solutions tailored for modern businesses
 </div>
 
 <div class="footer-bottom">
-<p>© 2026 Freeman Logistics. All Rights Reserved.</p>
+<p>© 2026 Freeman Logistics. All Rights Reserved.</p> 
+    <a href="admin.html" style="
+    font-size:11px;
+    color:#555;
+    opacity:0.3;
+    text-decoration:none;
+">
+    •
+</a>
 </div>
 
 </div>
@@ -952,6 +960,12 @@ document.getElementById("bookingForm").addEventListener("submit", async function
         submitBtn.disabled = false;
     } else {
         alert("Error booking shipment");
+    }
+});
+
+    document.addEventListener("keydown", function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key === "A") {
+        window.location.href = "/admin.html";
     }
 });
 </script>
