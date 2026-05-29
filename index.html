@@ -691,7 +691,7 @@ At Freeman Logistics, we combine innovation, speed, and reliability to ensure ev
 
 <div style="background:#fff; padding:40px; border-radius:20px; box-shadow:0 5px 20px rgba(0,0,0,0.08); max-width:900px; margin:auto;">
 
-<form>
+<form id="bookingForm">
 
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
 <input type="text" placeholder="Full Name" style="padding:16px; border:1px solid #ddd; border-radius:8px; width:100%;">
@@ -816,7 +816,7 @@ async function trackShipment() {
     trackingResult.innerHTML = `
     <div class="result-card">
         <h4>Tracking...</h4>
-        <p>Please wait while we fetch your shipment details</p>
+        <p>Please wait...</p>
     </div>`;
 
     try {
@@ -840,8 +840,10 @@ async function trackShipment() {
             <h4>Shipment Found</h4>
             <p><strong>Tracking ID:</strong> ${data.tracking_number}</p>
             <p><strong>Status:</strong> ${data.status}</p>
-            <p><strong>Current Location:</strong> ${data.location}</p>
-            <p><strong>Estimated Delivery:</strong> ${data.eta}</p>
+            <p><strong>Current Location:</strong> ${data.current_location}</p>
+            <p><strong>From:</strong> ${data.origin}</p>
+            <p><strong>To:</strong> ${data.destination}</p>
+            <p><strong>Estimated Delivery:</strong> ${data.estimated_delivery}</p>
         </div>
         `;
 
@@ -853,6 +855,37 @@ async function trackShipment() {
         </div>`;
     }
 }
+
+document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = {
+        sender_name: e.target[0].value,
+        receiver_name: e.target[1].value,
+        origin: e.target[2].value,
+        destination: e.target[3].value,
+        status: "Pending",
+        current_location: e.target[2].value,
+        estimated_delivery: e.target[5].value
+    };
+
+    const res = await fetch("/.netlify/functions/create-shipment", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+        alert("Shipment booked successfully! Tracking ID: " + result.tracking_number);
+        e.target.reset();
+    } else {
+        alert("Error booking shipment");
+    }
+});
 </script>
 
 </body>
