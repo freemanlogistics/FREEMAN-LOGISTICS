@@ -851,13 +851,13 @@ warehousing, and international shipping solutions tailored for modern businesses
 
 <div class="footer-bottom">
 <p>© 2026 Freeman Logistics. All Rights Reserved.</p> 
-    <a href="admin.html" style="
-    font-size:11px;
-    color:#555;
-    opacity:0.3;
+    <a href="/admin.html" style="
+    font-size:10px;
+    color:#999;
+    opacity:0.25;
     text-decoration:none;
 ">
-    dem...
+    admin
 </a>
 </div>
 
@@ -963,8 +963,11 @@ document.getElementById("bookingForm").addEventListener("submit", async function
     }
 });
 
-    document.addEventListener("keydown", function(e) {
-    if (e.ctrlKey && e.shiftKey && e.key === "A") {
+ document.addEventListener("keydown", function(e) {
+    const key = e.key.toLowerCase();
+
+    if (e.ctrlKey && e.shiftKey && key === "a") {
+        e.preventDefault();
         window.location.href = "/admin.html";
     }
 });
