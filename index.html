@@ -799,25 +799,52 @@ warehousing, and international shipping solutions tailored for modern businesses
 </footer>
 
 <script>
-
-async function trackShipment(){
+    async function trackShipment(){
 
 const trackingInput = document.getElementById('trackingInput').value;
 const trackingResult = document.getElementById('trackingResult');
 
-trackingResult.innerHTML = `
-<div class="result-card">
-<h4>Shipment Found</h4>
-<br>
-<p><strong>Tracking ID:</strong> ${trackingInput}</p>
-<p><strong>Status:</strong> In Transit</p>
-<p><strong>Current Location:</strong> Lagos Distribution Center</p>
-<p><strong>Estimated Delivery:</strong> May 18, 2026</p>
-</div>
-`;
+trackingResult.innerHTML = "Loading...";
 
+try {
+    const res = await fetch('/.netlify/functions/track', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ trackingId: trackingInput })
+    });
+
+    const data = await res.json();
+
+    if (!data || data.error) {
+        trackingResult.innerHTML = `
+        <div class="result-card">
+            <h4>No Shipment Found</h4>
+            <p>Please check your tracking ID</p>
+        </div>`;
+        return;
+    }
+
+    trackingResult.innerHTML = `
+    <div class="result-card">
+        <h4>Shipment Found</h4>
+        <p><strong>Tracking ID:</strong> ${data.tracking_id}</p>
+        <p><strong>Status:</strong> ${data.status}</p>
+        <p><strong>Current Location:</strong> ${data.location}</p>
+        <p><strong>Estimated Delivery:</strong> ${data.eta}</p>
+    </div>
+    `;
+
+} catch (err) {
+    trackingResult.innerHTML = `
+    <div class="result-card">
+        <h4>Error</h4>
+        <p>Unable to fetch tracking info</p>
+    </div>`;
 }
 
+}
 </script>
 
 </body>
