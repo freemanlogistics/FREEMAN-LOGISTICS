@@ -1,11 +1,8 @@
-# Freeman Logistics — Admin Dashboard
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"> <!-- Sets character encoding -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile responsiveness -->
 <title>Freeman Logistics Admin</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,18 +12,69 @@
 
 <style>
 
+/* RESET STYLES */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+/* BODY STYLE */
 body{
     font-family:'Poppins',sans-serif;
     background:#f4f7fb;
     color:#1b1b1b;
 }
 
+/* LOGIN OVERLAY (SECURITY SCREEN) */
+#loginScreen{
+    position:fixed; /* stays on top of everything */
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#071c35; /* dark admin background */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999; /* ensures it's above everything */
+}
+
+/* LOGIN BOX */
+.login-box{
+    background:#fff;
+    padding:40px;
+    border-radius:12px;
+    width:320px;
+    text-align:center;
+}
+
+/* INPUT STYLE */
+.login-box input{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+/* LOGIN BUTTON */
+.login-box button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:#ffb400;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+}
+
+/* HIDE DASHBOARD INITIALLY */
+.dashboard{
+    display:none; /* hidden until login succeeds */
+}
+
+/* DASHBOARD LAYOUT */
 .dashboard{
     display:grid;
     grid-template-columns:280px 1fr;
@@ -34,13 +82,13 @@ body{
 }
 
 /* SIDEBAR */
-
 .sidebar{
     background:#071c35;
     padding:30px;
     color:#fff;
 }
 
+/* LOGO */
 .logo{
     display:flex;
     align-items:center;
@@ -53,10 +101,7 @@ body{
     font-size:28px;
 }
 
-.logo h2{
-    font-size:24px;
-}
-
+/* MENU */
 .menu{
     list-style:none;
 }
@@ -73,22 +118,21 @@ body{
     gap:12px;
     padding:14px 16px;
     border-radius:8px;
-    transition:0.3s;
 }
 
+/* ACTIVE MENU */
 .menu a:hover,
 .menu .active{
     background:#ffb400;
     color:#071c35;
-    font-weight:600;
 }
 
-/* MAIN */
-
+/* MAIN AREA */
 .main{
     padding:40px;
 }
 
+/* TOP BAR */
 .topbar{
     display:flex;
     justify-content:space-between;
@@ -96,10 +140,7 @@ body{
     margin-bottom:35px;
 }
 
-.topbar h1{
-    color:#071c35;
-}
-
+/* PROFILE */
 .admin-profile{
     display:flex;
     align-items:center;
@@ -107,129 +148,16 @@ body{
     background:#fff;
     padding:10px 16px;
     border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.06);
-}
-
-.admin-profile img{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-/* STATS */
-
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-    margin-bottom:40px;
-}
-
-.stat-card{
-    background:#fff;
-    padding:25px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.06);
-}
-
-.stat-card i{
-    font-size:30px;
-    color:#ffb400;
-    margin-bottom:15px;
-}
-
-.stat-card h2{
-    color:#071c35;
-    margin-bottom:5px;
-}
-
-.stat-card p{
-    color:#777;
-}
-
-/* FORM */
-
-.form-section{
-    background:#fff;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.06);
-    margin-bottom:40px;
-}
-
-.form-section h2{
-    margin-bottom:25px;
-    color:#071c35;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.form-group{
-    margin-bottom:20px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:500;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea{
-    width:100%;
-    padding:15px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    font-family:'Poppins',sans-serif;
-}
-
-textarea{
-    height:120px;
-    resize:none;
-}
-
-.submit-btn{
-    background:#ffb400;
-    border:none;
-    padding:16px 30px;
-    border-radius:10px;
-    font-weight:600;
-    cursor:pointer;
 }
 
 /* TABLE */
-
-.table-section{
-    background:#fff;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.06);
-}
-
-.table-section h2{
-    margin-bottom:25px;
-    color:#071c35;
-}
-
-.table-wrapper{
-    overflow-x:auto;
-}
-
 table{
     width:100%;
     border-collapse:collapse;
 }
 
-th,
-td{
-    padding:16px;
-    text-align:left;
+th, td{
+    padding:14px;
     border-bottom:1px solid #eee;
 }
 
@@ -238,290 +166,167 @@ th{
     color:#fff;
 }
 
+/* STATUS */
 .status{
-    padding:8px 12px;
-    border-radius:30px;
-    font-size:13px;
-    font-weight:600;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
 }
 
-.in-transit{
-    background:#fff3cd;
-    color:#856404;
-}
-
-.delivered{
-    background:#d4edda;
-    color:#155724;
-}
-
-.pending{
-    background:#f8d7da;
-    color:#721c24;
-}
-
-.action-btn{
-    border:none;
-    padding:10px 14px;
-    border-radius:8px;
-    cursor:pointer;
-    margin-right:8px;
-}
-
-.edit-btn{
-    background:#071c35;
-    color:#fff;
-}
-
-.delete-btn{
-    background:#dc3545;
-    color:#fff;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:992px){
-
-.dashboard{
-    grid-template-columns:1fr;
-}
-
-.sidebar{
-    display:none;
-}
-
-.stats-grid,
-.form-grid{
-    grid-template-columns:1fr;
-}
-
-}
+.in-transit{background:#fff3cd;}
+.delivered{background:#d4edda;}
+.pending{background:#f8d7da;}
 
 </style>
 </head>
+
 <body>
 
-<div class="dashboard">
+<!-- ================= LOGIN SCREEN ================= -->
+<div id="loginScreen">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+    <!-- LOGIN BOX -->
+    <div class="login-box">
 
-<div class="logo">
-<i class="fa-solid fa-truck-fast"></i>
-<h2>Freeman Admin</h2>
-</div>
+        <h2>Admin Login</h2> <!-- Title -->
 
-<ul class="menu">
-<li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-<li><a href="#shipment-form"><i class="fa-solid fa-box"></i> Create Shipment</a></li>
-<li><a href="#shipments"><i class="fa-solid fa-truck"></i> Shipments</a></li>
-<li><a href="#"><i class="fa-solid fa-location-dot"></i> Tracking</a></li>
-<li><a href="#"><i class="fa-solid fa-users"></i> Customers</a></li>
-<li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
-</ul>
+        <input type="password" id="adminPassword" placeholder="Enter Admin Password"> <!-- Password input -->
+
+        <button onclick="login()">Login</button> <!-- Login button -->
+
+        <p id="error" style="color:red;margin-top:10px;"></p> <!-- Error message -->
+
+    </div>
 
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<!-- ================= DASHBOARD ================= -->
+<div class="dashboard" id="dashboard">
 
-<div class="topbar">
-<h1>Dashboard Overview</h1>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
 
-<div class="admin-profile">
-<img src="https://randomuser.me/api/portraits/men/32.jpg">
-<div>
-<h4>Admin</h4>
-<small>Freeman Logistics</small>
-</div>
-</div>
+        <div class="logo">
+            <i class="fa-solid fa-truck-fast"></i>
+            <h2>Freeman Admin</h2>
+        </div>
 
-</div>
+        <ul class="menu">
+            <li><a href="#" class="active"><i class="fa fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#shipments"><i class="fa fa-box"></i> Shipments</a></li>
+        </ul>
 
-<!-- STATS -->
-<div class="stats-grid">
+    </div>
 
-<div class="stat-card">
-<i class="fa-solid fa-box"></i>
-<h2>1,250</h2>
-<p>Total Shipments</p>
-</div>
+    <!-- MAIN CONTENT -->
+    <div class="main">
 
-<div class="stat-card">
-<i class="fa-solid fa-truck-fast"></i>
-<h2>846</h2>
-<p>In Transit</p>
-</div>
+        <div class="topbar">
+            <h1>Dashboard</h1>
 
-<div class="stat-card">
-<i class="fa-solid fa-circle-check"></i>
-<h2>392</h2>
-<p>Delivered</p>
-</div>
+            <div class="admin-profile">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg">
+                <div>
+                    <h4>Admin</h4>
+                    <small>Freeman Logistics</small>
+                </div>
+            </div>
+        </div>
 
-<div class="stat-card">
-<i class="fa-solid fa-users"></i>
-<h2>5,420</h2>
-<p>Customers</p>
-</div>
+        <!-- SHIPMENTS TABLE -->
+        <h2>Shipments</h2>
 
-</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tracking</th>
+                    <th>Sender</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-<!-- CREATE SHIPMENT -->
-<div class="form-section" id="shipment-form">
-<h2>Create New Shipment</h2>
+            <tbody id="tableBody">
+                <!-- Data loads here dynamically -->
+            </tbody>
 
-<form>
+        </table>
 
-<div class="form-grid">
-
-<div class="form-group">
-<label>Tracking Number</label>
-<input type="text" placeholder="FRM92817452">
-</div>
-
-<div class="form-group">
-<label>Shipment Status</label>
-<select>
-<option>Pending</option>
-<option>In Transit</option>
-<option>Delivered</option>
-<option>On Hold</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>Sender Name</label>
-<input type="text" placeholder="John Doe">
-</div>
-
-<div class="form-group">
-<label>Receiver Name</label>
-<input type="text" placeholder="Michael Smith">
-</div>
-
-<div class="form-group">
-<label>Pickup Location</label>
-<input type="text" placeholder="Lagos, Nigeria">
-</div>
-
-<div class="form-group">
-<label>Destination</label>
-<input type="text" placeholder="New York, USA">
-</div>
-
-<div class="form-group">
-<label>Estimated Delivery Date</label>
-<input type="date">
-</div>
-
-<div class="form-group">
-<label>Current Shipment Location</label>
-<input type="text" placeholder="Abuja Distribution Center">
-</div>
+    </div>
 
 </div>
 
-<div class="form-group">
-<label>Shipment Description</label>
-<textarea placeholder="Package details, cargo information, delivery notes..."></textarea>
-</div>
+<!-- ================= JAVASCRIPT ================= -->
+<script>
 
-<button class="submit-btn" type="submit">
-Create Shipment
-</button>
+/* ================= ADMIN PASSWORD ================= */
+// ⚠️ change this later for real security
+const ADMIN_PASSWORD = "Freemanlog123";
 
-</form>
+/* ================= LOGIN FUNCTION ================= */
+function login(){
 
-</div>
+    // get password input value
+    const input = document.getElementById("adminPassword").value;
 
-<!-- TABLE -->
-<div class="table-section" id="shipments">
-<h2>Recent Shipments</h2>
+    // check password
+    if(input === ADMIN_PASSWORD){
 
-<div class="table-wrapper">
-<table>
-<thead>
-<tr>
-<th>Tracking ID</th>
-<th>Customer</th>
-<th>Destination</th>
-<th>Status</th>
-<th>Date</th>
-<th>Actions</th>
-</tr>
-</thead>
+        // save login session
+        sessionStorage.setItem("loggedIn", "true");
 
-<tbody>
+        // show dashboard
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("dashboard").style.display = "grid";
 
-<tr>
-<td>FRM92817452</td>
-<td>John Doe</td>
-<td>New York, USA</td>
-<td><span class="status in-transit">In Transit</span></td>
-<td>May 13, 2026</td>
-<td>
-<button class="action-btn edit-btn">Edit</button>
-<button class="action-btn delete-btn">Delete</button>
-</td>
-</tr>
+        // load data
+        loadShipments();
 
-<tr>
-<td>FRM78291011</td>
-<td>Sarah James</td>
-<td>London, UK</td>
-<td><span class="status delivered">Delivered</span></td>
-<td>May 11, 2026</td>
-<td>
-<button class="action-btn edit-btn">Edit</button>
-<button class="action-btn delete-btn">Delete</button>
-</td>
-</tr>
+    } else {
+        // show error
+        document.getElementById("error").innerText = "Wrong password";
+    }
+}
 
-<tr>
-<td>FRM66482190</td>
-<td>David Lee</td>
-<td>Toronto, Canada</td>
-<td><span class="status pending">Pending</span></td>
-<td>May 10, 2026</td>
-<td>
-<button class="action-btn edit-btn">Edit</button>
-<button class="action-btn delete-btn">Delete</button>
-</td>
-</tr>
+/* ================= AUTO CHECK LOGIN ================= */
+window.onload = function(){
 
-</tbody>
-</table>
-</div>
+    // check session
+    if(sessionStorage.getItem("loggedIn") === "true"){
 
-</div>
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("dashboard").style.display = "grid";
 
-</div>
+        loadShipments();
+    }
+}
 
-</div>
+/* ================= LOAD SHIPMENTS ================= */
+async function loadShipments(){
+
+    const res = await fetch("/.netlify/functions/track-all"); 
+    // NOTE: you will later create this function
+
+    const data = await res.json();
+
+    const table = document.getElementById("tableBody");
+
+    table.innerHTML = "";
+
+    data.forEach(item => {
+
+        table.innerHTML += `
+        <tr>
+            <td>${item.tracking_number}</td>
+            <td>${item.sender_name}</td>
+            <td>${item.destination}</td>
+            <td><span class="status ${item.status.toLowerCase().replace(" ","-")}">${item.status}</span></td>
+        </tr>
+        `;
+    });
+}
+
+</script>
 
 </body>
 </html>
-```
-
-# Next Step
-
-After testing the admin dashboard locally:
-
-1. Create:
-
-   ```
-   admin.html
-   ```
-
-2. Paste the code.
-
-3. Open in browser.
-
-4. Next phase:
-
-   * Connect Supabase database
-   * Save shipment records
-   * Real tracking system
-   * Login authentication
-   * Edit/delete shipment logic
