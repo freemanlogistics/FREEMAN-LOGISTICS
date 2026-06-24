@@ -2,17 +2,18 @@ const { createClient } = require('@supabase/supabase-js')
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
 exports.handler = async (event) => {
   try {
-    const tracking = event.queryStringParameters?.tracking
+    const tracking = event.queryStringParameters?.tracking?.trim().toUpperCase()
 
     if (!tracking) {
       return {
         statusCode: 400,
         body: JSON.stringify({
+          success: false,
           error: 'Tracking number is required'
         })
       }
@@ -28,6 +29,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 500,
         body: JSON.stringify({
+          success: false,
           error: 'Database error',
           details: error.message
         })
@@ -38,6 +40,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 404,
         body: JSON.stringify({
+          success: false,
           error: 'Tracking number not found'
         })
       }
@@ -45,13 +48,17 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        success: true,
+        data
+      })
     }
 
   } catch (err) {
     return {
       statusCode: 500,
       body: JSON.stringify({
+        success: false,
         error: 'Server error',
         details: err.message
       })
