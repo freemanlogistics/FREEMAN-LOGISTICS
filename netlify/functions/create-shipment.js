@@ -2,27 +2,48 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 exports.handler = async (event) => {
-
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      body: JSON.stringify({
-        error: 'Method not allowed'
-      })
+      body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
+  let body;
+
   try {
+    body = JSON.parse(event.body);
+  } catch (err) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Invalid JSON' })
+    };
+  }
 
-    const body = JSON.parse(event.body);
+  // Validation
+  if (
+    !body.sender_name ||
+    !body.receiver_name ||
+    !body.email ||
+    !body.origin ||
+    !body.destination
+  ) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Missing required fields' })
+    };
+  }
 
-    const trackingNumber =
-      'FRM' + Math.floor(100000000 + Math.random() * 900000000);
+  const trackingNumber =
+    'FRM' +
+    Date.now().toString().slice(-6) +
+    Math.floor(Math.random() * 900 + 100);
 
+  try {
     const { data, error } = await supabase
       .from('shipments')
       .insert([
@@ -35,8 +56,8 @@ exports.handler = async (event) => {
           destination: body.destination,
           shipment_type: body.shipment_type,
           shipment_details: body.shipment_details,
-          status: body.status,
-          current_location: body.current_location,
+          status: body.status || 'Pending',
+          current_location: body.current_location || body.origin,
           estimated_delivery: body.estimated_delivery
         }
       ])
@@ -46,26 +67,22 @@ exports.handler = async (event) => {
     if (error) {
       return {
         statusCode: 500,
-        body: JSON.stringify({
-          error: error.message
-        })
+        body: JSON.stringify({ error: error.message })
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
-    };
-
-  } catch (err) {
-
-    return {
-      statusCode: 500,
       body: JSON.stringify({
-        error: 'Server error'
+        success: true,
+        shipment: data
       })
     };
 
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Server error' })
+    };
   }
-
 };
